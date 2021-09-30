@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户的列表</title>
+    <!-- 要是用layui, 需要引入 1个js  和 1 css  因为你我路径不一样, 别抄袭我的,,copy 你自己的啊 -->
+    <script src="/res/layui-v2.5.6/layui/layui.js"></script>
+    <link rel="stylesheet" href="/res/layui-v2.5.6/layui/css/layui.css">
+</head>
+
+<body>
+
+<!--我是修改-->
+<script type="text/html" id="updateHtml">
+    <form class="layui-form  layui-form-pane" action="" onsubmit="return false" lay-filter="myUpdate" >
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sex"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" name="age"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">账户</label>
+            <div class="layui-input-inline">
+                <input type="text" name="account"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门id</label>
+            <div class="layui-input-inline">
+                <input type="text" name="did"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="phone"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">删除</label>
+            <div class="layui-input-inline">
+                <input type="text" name="del"  class="layui-input">
+            </div>
+        </div>
+
+        <!--id 隐藏起来-->
+        <input class="layui-input" type="hidden" value="" name="id">
+        <!--下面应该有 提交 或者 返回按钮- 隐藏起来 -->
+
+        <button class="layui-btn layui-hide" lay-submit lay-filter="myUpdateSubmit" id="myUpdateSubmit">立即提交</button>
+
+
+    </form>
+
+</script>
+
+<!--我是增加-->
+<script type="text/html" id="addHtml">
+    <form class="layui-form  layui-form-pane" action="" onsubmit="return false" lay-filter="myUpdate" >
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名字</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="sex"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" name="age"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">账户</label>
+            <div class="layui-input-inline">
+                <input type="text" name="account"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门id</label>
+            <div class="layui-input-inline">
+                <input type="text" name="did"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="phone"  class="layui-input">
+        </div>
+    </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">删除</label>
+            <div class="layui-input-inline">
+                <input type="text" name="del"  class="layui-input">
+            </div>
+        </div>
+        <!--下面应该有 提交 或者 返回按钮- 隐藏起来 -->
+        <button class="layui-btn layui-hide" lay-submit lay-filter="myAddSubmit" id="myAddSubmit">立即提交</button>
+    </form>
+
+</script>
+
+<!--加上一个搜索框-->
+<form class="layui-form  layui-form-pane" action="" onsubmit="return false">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名字</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name"  placeholder="请输入账号" class="layui-input">
+        </div>
+
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-inline">
+            <input type="text" name="age"  placeholder="请输入姓名" class="layui-input">
+        </div>
+
+        <label class="layui-form-label">账号</label>
+        <div class="layui-input-inline">
+            <input type="text" name="account"  placeholder="请输入姓名" class="layui-input">
+        </div>
+
+        <div class="layui-input-inline">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="searchBtn">搜索</button>
+        </div>
+    </div>
+
+</form>
+
+
+<!-- 数据表格如何用呢? 第一步,拷贝一个 html  table 标记 -->
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addObj">添加</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script>
+    layui.use(['form', 'table', 'util', 'jquery','laydate'], function (args) {
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var $ = layui.jquery;
+        var laydate = layui.laydate;
+
+        // table.render 是渲染 上面的 table 表格
+        table.render({
+            elem: '#test'
+            // , url: '/test/table/demo1.json'
+            , url: '/api/master/selectAll'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , title: '用户数据表'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                // , {
+                //     field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
+                //         return '<em>' + res.email + '</em>'
+                //     }
+                // }
+                , {field: 'id', title: '序号', width: 80, edit: 'text', sort: true}
+                , {field: 'name', title: '名字', width: 160}
+                , {field: 'age', title: '年龄', width: 160}
+                , {field: 'account', title: '账号', width: 160}
+                , {field: 'password', title: '密码', width: 160}
+                , {field: 'did', title: '部门id', width: 160}
+                , {field: 'phone', title: '手机号', width: 200,align:'center'}
+                , {field: 'del', title: '删除', width: 160}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+
+            ]]
+
+
+        });
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+                case 'addObj':
+
+                    layer.open({
+                        title:'编辑',
+                        area: ['400px', '500px'],
+                        type: 1,
+                        //  content: '<h1>你好世界..</h1>' // 一般不吧html写在这里
+                        content: $("#addHtml").html() ,
+                        success:function (layero, index) {
+                            //发送ajax 得到数据后渲染到 select 框中
+                            //异步 刷新 layui 的下拉框
+                        },
+                        btn:['确定添加','取消添加'],
+                        yes:function (index, layero) {
+                            // alert("向后台发送了ajax")
+                            $("#myAddSubmit").click();
+                            return false;  //开启该代码可禁止点击该按钮关闭
+                        },
+                        btn2:function (index, layero) {
+                            alert("我取消了添加")
+                            return false;  //开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                    layer.msg("这里写添加");
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url:'/DelServlet',
+                        type:'post',
+                        data:{"id":data.id},
+                        dataType:'json',
+                        success:function (res) {
+                            console.log(res)
+                            if(res.code==0){
+                                layer.msg("删除成功",{icon:2});
+                                table.reload('test', {
+                                }); //只重再数据
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    title:'编辑',
+                    area: ['600px', '600px'],
+                    type: 1,
+                    //  content: '<h1>你好世界..</h1>' // 一般不吧html写在这里
+                    content: $("#updateHtml").html() ,
+                    success:function (layero, index) {
+                        console.log(layero)
+                        console.log(index)
+                        console.log(" 我是 layer 弹出成功后的回调")
+                        console.log(data)
+
+                        //给表单赋值
+                        form.val("myUpdate", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                            "name": data.name // "name": "value"
+                            ,"sex": data.sex
+                            ,"age": data.age
+                            ,"account": data.account
+                            ,"password": data.password
+                            ,"did": data.did
+                            ,"phone": data.phone
+                            ,"del": data.del
+                            ,"id":data.id
+                        });
+
+                        form.render();  // 重点:强调: 当界面发生改变时, 记得 重新渲染模块,不然不显示效果
+
+                    },
+                    btn:['确定修改','取消修改','其他'],
+                    yes:function (index, layero) {
+                        // alert("向后台发送了ajax")
+                        $("#myUpdateSubmit").click();
+                        return false;  //开启该代码可禁止点击该按钮关闭
+                    },
+                    btn2:function (index, layero) {
+                        alert("我取消了修改")
+                        return false;  //开启该代码可禁止点击该按钮关闭
+                    }
+                });
+            }
+        });
+
+        //监听搜索按钮
+        form.on('submit(searchBtn)',function (data) {
+            //alert('监听搜索')
+            console.log(data.field);
+            var date = layui.table.cache.demoFin;//获取当前表格数据*/
+            table.reload('test',{
+                where:{//设定异步数据接口的额外参数，任意设
+                    name:data.field.name
+                    ,age:data.field.age
+                    ,account:data.field.account
+                }
+            });//只重再数据
+            return false;
+        })
+
+        //监听添加的按钮
+        form.on('submit(myAddSubmit)',function (data) {
+            console.log(data);
+            $.ajax({
+                url:"/AddMasterServlet",
+                type:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function (res) {
+                    console.log(res)
+                    if(res.code==0){
+                        layer.msg("添加成功")
+                        table.reload('test',{
+                            page:{
+                                curr:1//重新从第1页开始
+                            }
+                        });//只重载数据
+                    }
+                }
+            });
+
+        })
+
+
+        //监听修改的按钮
+        form.on('submit(myUpdateSubmit)',function (data) {
+            console.log(data);
+            $.ajax({
+                url:"/UpdateServlet",
+                type:'post',
+                data:data.field,
+                dataType:'JSON',
+                success:function (res) {
+                    console.log(res)
+                    if(res.code==0){
+                        layer.msg("修改成功")
+                        table.reload('test',{
+                            page:{
+                                curr:1//重新从第1页开始
+                            }
+                        });//只重载数据
+                    }
+                }
+            });
+
+        })
+    });
+
+</script>
+
+</body>
+</html>

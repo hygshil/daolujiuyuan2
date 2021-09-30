@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,u ser-scalable=no">
+	<!--<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=gXLkbXzN7kOR22S6iszA2Zfe6yIkK0s4"></script>-->
+	<script type="text/javascript"
+		src="http://api.map.baidu.com/api?v=3.0&ak=Fhht41hbwZRE7mZFqkHRucP62OzXhHVG"></script>
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+	<title>困境救援服务</title>
+</head>
+
+<body>
+
+	<form id="form1">
+		<!--顶部操作栏-->
+		<div class="nav">
+			<span>
+				<img src="img/icon1.png" />
+			</span>
+			<span class="active" onclick="$('.footer_address1').hide()">搭电</span>
+			<span class="active" onclick="$('.footer_address1').show()">拖车</span>
+			<span>换胎</span>
+			<span>紧急脱困</span>
+			<span onclick="window.location.href = 'tel://10000'">咨询
+				<img src="img/icon2.png" />
+			</span>
+		</div>
+		<!--地图模块-->
+		<div class="map" id="map" style="font-size: 2rem;"></div>
+		<!--地图上面的 导航页签-->
+		<div class="footer">
+			<p class="footer_title">
+				<span>搭电服务</span>，预计费用：<span>￥ <span id="money"></span> 元起</span>
+				<i onclick="$('.clover').show()">费用说明></i>
+			</p>
+			<p class="footer_address">
+				<span>●</span>
+				<span id="addressText">河南省郑州市</span>
+			</p>
+			<p class="footer_address1">
+				<span>●</span>
+				<input type="text" placeholder="请输入拖车目的地" />
+			</p>
+			<div class="addList">
+				<div>
+					<p><img src="img/icon5.png" /> <span> 车在地库</span></p><br />
+					<p style="margin-top: 0.08rem;color: gray;">￥ 100</p>
+				</div>
+				<div>
+					<p><img src="img/icon6.png" /> <span> 需要附轮</span></p><br />
+					<p style="margin-top: 0.08rem;color: gray;">￥ 100</p>
+				</div>
+			</div>
+			<div class="btn" id="nextBtn">
+				提交
+			</div>
+		</div>
+
+		<!--费用说明-->
+		<div class="clover">
+			<div>
+				<h3>拖车报价</h3>
+				<p>拖车￥198（15公里内）；超过15公里以后，10元/公里</p>
+				<p>以上收费仅包含救援服务费，救援过程中产生的费用需要您承担，如有产生费用，请在服务完成后现场支付给师傅，包含：</p>
+				<p>1.救援过程中产生的过路、过桥、停车等费用；</p>
+				<p>2.换胎如需购置轮胎，需要您承担购置费；</p>
+				<p>3.地库和加附轮各需额外支付100元费用；</p>
+				<p>取消收费规则：</p>
+				<p>1.报案成功后10分钟之内可免费取消</p>
+				<p>2.超过10分钟后师傅到达现场前，将收取基础费用的50%作为服务师傅的辛苦费；</p>
+				<p>3.师傅到达现场后，取消不退费；</p>
+				<span>24小时救援客服热线：<a href="tel:123456">123456</a></span> <br />
+				<span>服务监督电话：<a href="tel:123456">123456</a></span>
+				<img src="img/icon4.png" onclick="$('.clover').hide()" />
+			</div>
+		</div>
+
+
+		<!--点击 首页 "头像" 的侧滑菜单-->
+		<div class="left">
+			<div class="left_main">
+				<div id="login">
+
+				</div>
+				<p>
+					<span onclick="location.href='order'">我的订单</span>
+					<img src="img/icon8.png" />
+				</p>
+				<p onclick="alert('钱到位，啥事儿都好办！')">
+					<span>救援服务协议</span>
+					<img src="img/icon8.png" />
+				</p>
+				<p>
+					<span>救援客服热线 <a style="color: blue;position: relative;top: -0.06rem;margin-left: 0.1rem;"
+							href="tel:110">123456</a></span>
+					<img src="img/icon8.png" />
+				</p>
+			</div>
+		</div>
+		<input id="address" name="address" type="hidden" value="">
+		<input id="lng" name="lng" type="hidden" value="">
+		<input id="lat" name="lat" type="hidden" value="">
+		<input type="hidden" name="contents" id="contents" value="搭电" />
+		<input type="hidden" name="attached" id="attached" value="" />
+		<!-- <input type="hidden"  name="phone" id="phone"/> -->
+		<input type="hidden" name="cost" id="cost" value="" />
+	</form>
+</body>
+<script type="text/javascript">
+	var map = new BMap.Map("map");// 创建地图实例 
+	var point = new BMap.Point(113.836953, 34.728566);// 创建点坐标(当做公司的出车所在地) 
+
+	// var json_data = [
+	// 	[113.667425, 34.754556],
+	// 	[113.665556, 34.754437],
+	// 	[113.716724, 34.641897],
+	// 	[113.213673, 34.654251],
+	// 	[113.878275, 34.467799],
+	// 	[113.513779, 34.534437]
+	// ];
+
+	map.centerAndZoom(point, 17);// 初始化地图，设置中心点坐标和地图级别
+
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+	// 添加带有定位的导航控件
+	var navigationControl = new BMap.NavigationControl({
+		// 靠左上角位置
+		anchor: BMAP_ANCHOR_TOP_LEFT,
+		// LARGE类型
+		type: BMAP_NAVIGATION_CONTROL_LARGE,
+		// 启用显示定位
+		enableGeolocation: true
+	});
+	map.addControl(navigationControl);
+
+	//创建小狐狸
+	var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300, 157));
+	var marker3 = new BMap.Marker(point, { icon: myIcon })
+	map.addOverlay(marker3);
+
+	// //循环获取定点的坐标点
+	// var pointArray = new Array();
+	// for (var i = 0; i < json_data.length; i++) {
+	// 	var myIcon = new BMap.Icon("img/mark1.png", new BMap.Size(37, 51));
+	// 	var marker = new BMap.Marker((new BMap.Point(json_data[i][0], json_data[i][1])), {
+	// 		icon: myIcon
+	// 	}); // 创建点
+	// 	var content = json_data[i][2];
+	// 	map.addOverlay(marker); //增加点
+	// 	pointArray[i] = new BMap.Point(json_data[i][0], json_data[i][1]);
+	// 	addClickHandler(content, marker);
+	// }
+	// function addClickHandler(content, marker) {
+	// 	marker.addEventListener("click", function (e) {
+	// 		openInfo(content, e)
+	// 	});
+
+	// }
+
+
+	// 添加定位控件
+	var geolocationControl = new BMap.GeolocationControl();
+	geolocationControl.addEventListener("locationSuccess", function (e) {
+		// 定位成功事件
+		var address = '';
+		address += e.addressComponent.province;
+		address += e.addressComponent.city;
+		address += e.addressComponent.district;
+		address += e.addressComponent.street;
+		address += e.addressComponent.streetNumber;
+		alert("当前定位地址为：" + address);
+	});
+	geolocationControl.addEventListener("locationError", function (e) {
+		// 定位失败事件
+		alert(e.message);
+	});
+	map.addControl(geolocationControl);  //添加定位控制条
+
+	var marker2 = new BMap.Marker(point);  // 创建标注
+
+	map.addEventListener("click", showInfo); //地图的点击事件，点击后创建一个红色的点点
+
+	//点击获取地点
+	var name;
+	var lng = 1.0;
+	var lat = 1.0;
+	function showInfo(e) {
+		map.removeOverlay(marker2);  //每点击一次，删除之前的点点标注
+		document.getElementById("lng").value = e.point.lng; //得到新的经纬度
+		lng = e.point.lng
+		document.getElementById("lat").value = e.point.lat; //得到新的经纬度
+		lat = e.point.lat;
+
+		marker2 = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  //把新的坐标系添加给点点标注
+		map.addOverlay(marker2);  //地图添加新的坐标的点点标注
+
+		var point = new BMap.Point(e.point.lng, e.point.lat);  //获取当前地理名称
+		var gc = new BMap.Geocoder();
+		gc.getLocation(point, function (rs) {
+			var addComp = rs.addressComponents;
+			name = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+			//alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+		});
+
+		console.log("发送ajax到后台，去计算2点之间的距离，根据距离的长短，算出人民币，渲染到前端的金钱标签里")
+
+
+		//两个经纬度，四个参数，因为一个经纬度是x,y
+		//1个经纬度是固定的，就是公司出车的经纬度  113.836953, 34.728566
+		//另一个经纬度不固定  document.getElementById("lng")  document.getElementById("lat")
+		//使用ajax传送4个参数
+		$.ajax({
+			type: 'post',
+			url: 'http://127.0.0.1:8080/api/customer/getMoney',
+			data: {
+				'gongSiLng': 113.836953,
+				'gongSiLat': 34.728566,
+				'customerLng': e.point.lng,
+				'customerLat': e.point.lat,
+			},
+			dataType: 'json',
+			success: function (res) {
+				if (res.code == 0) {
+					//把计算成功的数据渲染到价钱里 (money的id中)
+					$("#money").text(res.data);
+					$("#addressText").text(name);
+				}
+			},
+		})
+
+
+	}
+
+	//提交
+	$(function () {
+		$("#nextBtn").click(function () {
+			//点击click之前，去判断他的客户端有没有token
+			var isHasToken = localStorage.getItem('token');
+			console.log(isHasToken);  //没有token var是null，有token...
+			//没有token提示没有token返回登录页
+			if (isHasToken === null) {
+				alert('是空值,请登录后提交订单')
+				window.location.href = "/login.html"
+			} else {
+				//alert('不是空值')
+				//调用ajax发送页面中的6个数据到前端
+				$.ajax({
+					beforeSend: function (xhr) {
+						//beforeSend就是在ajax发送前所做的事情！！
+						xhr.setRequestHeader('token', isHasToken);
+					},
+					// headers:{
+					// 	'token':isHasToken
+					// },
+					type: 'post',
+					url: 'http://127.0.0.1:8080/api/orders/addOrders',
+					data: {
+						//手机号（过滤器可以拿到，不用前端拿到），经度lng,纬度lat，contents,address,cost
+						'lng': lng,
+						'lat': lat,
+						'contents': $(".footer_title").children().eq(0).text(),
+						'address': $("#addressText").text(),
+						'cost': $("#money").text()
+
+					},
+					dataType: 'json',
+					success: function (res) {
+						if (res.code == 0) {
+							alert("订单已经存在")
+						}
+						if(code==400){
+							$("#nextBtn").attr("disabled","true");
+							$("#nextBtn").text("已经提交");
+						}
+					},
+				})
+
+			}
+
+
+		})
+	})
+</script>
+
+
+
+</html>
